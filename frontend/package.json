@@ -11,7 +11,9 @@
   "dependencies": {
     "@urql/vue": "^2.0.0",
     "graphql": "^16.12.0",
-    "vue": "^3.5.24"
+    "graphql-yoga": "^5.18.0",
+    "vue": "^3.5.24",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
