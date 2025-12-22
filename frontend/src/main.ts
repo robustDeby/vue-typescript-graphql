@@ -1,6 +1,7 @@
 import { createApp, h } from 'vue'
 import { createClient, provideClient } from '@urql/vue'
 import { cacheExchange, fetchExchange } from '@urql/core'
+import { router } from './router'
 import App from './App.vue'
 
 const client = createClient({
@@ -18,4 +19,6 @@ const app = createApp({
   render: () => h(App),
 })
 
-app.mount('#app')
+app
+.use(router)
+.mount('#app')
