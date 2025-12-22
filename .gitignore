@@ -1,2 +1,68 @@
-backend/node_modules
-frontend/node_modules
+# =========================
+# Dependencies
+# =========================
+backend/node_modules/
+frontend/node_modules/
+
+bower_components/
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Build output
+# =========================
+dist/
+build/
+out/
+coverage/
+.cache/
+
+# =========================
+# Logs
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# =========================
+# Test artifacts
+# =========================
+cypress/videos/
+cypress/screenshots/
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+*.swp
+*.swo
+
+# =========================
+# Docker
+# =========================
+docker-data/
