@@ -20,6 +20,6 @@ export const typeDefs = gql`
 
   type Mutation {
     addBlog(title: String!, content: String!):Blog!
-    addRecommend(id: ID!, content:String!): [Blog!]!
+    addRecommend(id: ID!, content:String!): Blog!
   }
 `;

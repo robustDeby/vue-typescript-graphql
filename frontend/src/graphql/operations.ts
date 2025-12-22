@@ -21,3 +21,25 @@ export const GET_BLOGS = `
     }
   }
 `
+export const GET_BLOG = `
+  query GetBlog($id: ID!) {
+    blog(id: $id) {
+      id
+      title
+      content
+      recommends {
+        id
+        content
+      }
+    }
+  }
+`
+
+export const ADD_RECOMMEND = `
+  mutation AddRecommend($id: ID!, $content: String!) {
+    addRecommend(id: $id, content: $content) {
+      id
+      content
+    }
+  }
+`
