@@ -1,23 +1,32 @@
-import { createServer } from 'node:http'
-import { createYoga, createSchema } from 'graphql-yoga'
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import { createYoga, createSchema } from 'graphql-yoga';
 
+import { typeDefs } from './schema/blog.js';
+import { resolvers } from './schema/resolvers.js';
+
+const app = express();
+
+// MongoDB connection
+await mongoose.connect('mongodb+srv://wiktor:1212@working.9ariusi.mongodb.net/?appName=Working');
+
+// GraphQL schema
 const schema = createSchema({
-  typeDefs: `
-    type Query {
-      hello: String!
-    }
-  `,
-  resolvers: {
-    Query: {
-      hello: () => 'Hello from GraphQL backend',
-    },
-  },
-})
+  typeDefs,
+  resolvers,
+});
 
-const yoga = createYoga({ schema })
+// Yoga server
+const yoga = createYoga({
+  schema,
+  context: () => ({}),
+});
 
-const server = createServer(yoga)
+app.use(cors());
+app.use('/graphql', yoga);
 
-server.listen(4000, () => {
-  console.log('GraphQL running at http://localhost:4000/graphql')
-})
+app.listen(4000, () => {
+  console.log('🚀 GraphQL Yoga running at http://localhost:4000/graphql');
+});
+
