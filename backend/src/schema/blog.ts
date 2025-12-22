@@ -1,6 +1,6 @@
 import { gql } from 'graphql-tag';
 
-export const typeDefs = gql`
+export const blogTypeDefs = gql`
   type Recommend {
     id:ID!
     content:String!

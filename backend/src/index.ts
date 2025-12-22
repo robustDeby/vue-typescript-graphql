@@ -1,10 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import 'dotenv/config'
 import { createYoga, createSchema } from 'graphql-yoga';
 
-import { typeDefs } from './schema/blog.js';
-import { resolvers } from './schema/resolvers.js';
+import { blogTypeDefs } from './schema/blog.js';
+import { authTypeDefs } from './schema/auth.js';
+import { blogResolvers } from './schema/blog.resolvers.js';
+import { authResolvers } from './schema/auth.resolver.js';
 
 const app = express();
 
@@ -13,8 +16,8 @@ await mongoose.connect('mongodb+srv://wiktor:1212@working.9ariusi.mongodb.net/?a
 
 // GraphQL schema
 const schema = createSchema({
-  typeDefs,
-  resolvers,
+  typeDefs:[authTypeDefs,blogTypeDefs],
+  resolvers:[authResolvers,blogResolvers],
 });
 
 // Yoga server

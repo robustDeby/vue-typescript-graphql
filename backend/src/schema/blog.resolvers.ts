@@ -13,7 +13,7 @@ interface AddBlogArgs {
   content: string;
 }
 
-export const resolvers = {
+export const blogResolvers = {
   Query: {
     //READ (all)
     blogs: async () => {
