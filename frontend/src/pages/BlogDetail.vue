@@ -88,8 +88,8 @@ onMounted(fetchBlog)
 <style scoped>
 /* Page background */
 .page {
-  background: #f8fafc;
-  padding: 3rem 1rem;
+  width: 100%;
+  padding: 2.5rem 1rem;
 }
 
 /* Loading */

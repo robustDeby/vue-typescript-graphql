@@ -2,14 +2,18 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import "dotenv/config";
+import jwt from "jsonwebtoken";
 import { createYoga, createSchema } from "graphql-yoga";
+import type { GraphQLContext } from './types/context.js'
 
 import { blogTypeDefs } from "./schema/blog.js";
 import { authTypeDefs } from "./schema/auth.js";
 import { blogResolvers } from "./schema/blog.resolvers.js";
 import { authResolvers } from "./schema/auth.resolver.js";
 import { gql } from "graphql-tag";
+import User from "./models/user.js";
 
+const JWT_SECRET = process.env.JWT_SECRET as string;
 const app = express();
 
 // MongoDB connection
@@ -36,13 +40,29 @@ const schema = createSchema({
 });
 
 // Yoga server
-const yoga = createYoga({
+const yoga = createYoga<GraphQLContext>({
   schema,
-  context: () => ({}),
-});
+  context: async ({ request }) => {
+    const authHeader = request.headers.get('authorization')
+
+    if (!authHeader) {
+      return { user: null }
+    }
+
+    try {
+      const token = authHeader.replace('Bearer ', '')
+      const payload = jwt.verify(token, JWT_SECRET) as { userId: string }
+      const user = await User.findById(payload.userId)
+
+      return { user }
+    } catch {
+      return { user: null }
+    }
+  },
+})
 
 app.use(cors());
-app.use("/graphql", yoga);
+app.use("/graphql", yoga as any);
 
 app.listen(5000, () => {
   console.log("🚀 GraphQL Yoga running at http://localhost:5000/graphql");

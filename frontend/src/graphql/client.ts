@@ -2,7 +2,7 @@ import { GraphQLClient } from 'graphql-request'
 import { getToken } from '../auth/index'
 
 export const graphqlClient = new GraphQLClient(
-  'http://localhost:4000/graphql',
+  'http://localhost:5000/graphql',
   {
     headers: () => ({
       Authorization: `Bearer ${getToken()}`

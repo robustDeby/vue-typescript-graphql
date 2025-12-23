@@ -47,8 +47,10 @@ onMounted(fetchBlogs);
         class="card"
         @click="goToDetail(blog.id)"
       >
-        <h2>{{ blog.title }}</h2>
-
+        <div class="blog-header">
+          <h2>{{ blog.title }}</h2>
+          <h4>( {{ blog.author.name }} )</h4>
+        </div>
         <p class="preview">{{ blog.content.slice(0, 100) }}...</p>
 
         <span class="badge"> 💬 {{ blog.recommends.length }} </span>
@@ -67,8 +69,7 @@ onMounted(fetchBlogs);
 
 <style scoped>
 .page {
-  background: #f8fafc;
-  min-height: 100vh;
+  width: 100%;
   padding: 2.5rem 1rem;
 }
 
@@ -85,6 +86,12 @@ onMounted(fetchBlogs);
   color: #64748b;
 }
 
+.blog-header {
+  display: flex;
+}
+.blog-header > h4 {
+      margin-left: 3%;
+}
 .list {
   max-width: 900px;
   margin: 0 auto;
@@ -126,9 +133,8 @@ onMounted(fetchBlogs);
 }
 .fab {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-
+  bottom: 8rem;
+  right: 8rem;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -142,5 +148,4 @@ onMounted(fetchBlogs);
 
   box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
 }
-
 </style>

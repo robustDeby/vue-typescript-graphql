@@ -18,6 +18,10 @@ export const GET_BLOGS = `
         id
         content
       }
+      author {
+        name,
+        email
+      }
     }
   }
 `
