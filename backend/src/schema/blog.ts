@@ -18,7 +18,7 @@ export const blogTypeDefs = gql`
     blog(id: ID!): Blog
   }
 
-  type Mutation {
+  extend type Mutation {
     addBlog(title: String!, content: String!):Blog!
     addRecommend(id: ID!, content:String!): Blog!
   }

@@ -10,7 +10,6 @@ interface RegisterArgs {
     birthday:string
     email:string
     password:string
-    confirmPassword:string
 }
 
 interface LoginArgs {
@@ -20,19 +19,15 @@ interface LoginArgs {
 
 export const authResolvers = {
     Mutation: {
-        register:async(_:unknown, args: RegisterArgs) => {
+        register:async(_:unknown, {input}:{input: RegisterArgs} ) => {
             const {
                 name,
                 avatar, 
                 birthday,
                 email, 
                 password,
-                confirmPassword
-            } = args;
-            // password match check
-            if(password !== confirmPassword) {
-                throw new Error('Passwords donot match')
-            }
+            } = input;
+
             //Existing user check
             const existingUser = await User.findOne({email})
             if(existingUser) {
@@ -61,7 +56,10 @@ export const authResolvers = {
                 user
             }
         },
-        login:async(_:unknown, {email, password}:LoginArgs) => {
+        login:async(_:unknown,{input}:{input: LoginArgs}) => {
+            const {
+                email, password
+            } = input;
             const user = await User.findOne({email})
 
             if(!user) {
