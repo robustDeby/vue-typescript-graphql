@@ -88,7 +88,6 @@ onMounted(fetchBlog)
 <style scoped>
 /* Page background */
 .page {
-  min-height: 100vh;
   background: #f8fafc;
   padding: 3rem 1rem;
 }

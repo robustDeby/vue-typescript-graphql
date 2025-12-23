@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
+import AppHeader from "./components/AppHeader.vue";
+import AppFooter from "./components/AppFooter.vue";
 </script>
 
 <template>
@@ -30,6 +30,9 @@ body,
 }
 
 .main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 1;
   background-color: antiquewhite;
 }
