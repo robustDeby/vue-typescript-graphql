@@ -28,7 +28,7 @@
         <p v-if="error" class="error">{{ error }}</p>
 
         <button :disabled="loading">
-          {{ loading ? 'Logging in…' : 'Login' }}
+          {{ loading ? "Logging in…" : "Login" }}
         </button>
       </form>
 
@@ -41,26 +41,28 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref } from "vue";
+import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 
-const router = useRouter()
-const loading = ref(false)
-const error = ref('')
+const auth = useAuthStore()
+const router = useRouter();
+const loading = ref(false);
+const error = ref("");
 
 const form = reactive({
-  email: '',
-  password: ''
-})
+  email: "",
+  password: "",
+});
 
 async function handleLogin() {
-  error.value = ''
-  loading.value = true
+  error.value = "";
+  loading.value = true;
 
   try {
-    const res = await fetch('http://localhost:5000/graphql', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("http://localhost:5000/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         query: `
           mutation Login($input: LoginInput!) {
@@ -78,21 +80,22 @@ async function handleLogin() {
         variables: {
           input: {
             email: form.email,
-            password: form.password
-          }
-        }
-      })
-    })
+            password: form.password,
+          },
+        },
+      }),
+    });
 
-    const json = await res.json()
-    if (json.errors) throw new Error(json.errors[0].message)
+    const json = await res.json();
+    if (json.errors) throw new Error(json.errors[0].message);
 
-    localStorage.setItem('token', json.data.login.token)
-    router.push('/blogs')
+    auth.login(json.data.login.token); // ✅ REQUIRED
+    router.push("/blogs");
+
   } catch (e: any) {
-    error.value = e.message || 'Login failed'
+    error.value = e.message || "Login failed";
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>

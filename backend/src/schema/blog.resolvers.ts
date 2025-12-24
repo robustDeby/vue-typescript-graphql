@@ -18,12 +18,22 @@ export const blogResolvers = {
   Query: {
     //READ (all)
     blogs: async () => {
-      return await Blog.find().populate("author").populate("recommends.author");
-    },
+      const blogs = await Blog.find()
+        .populate("author")
+        .populate("recomments.author");
 
+      console.log("AUTHOR TYPE:", blogs[0]?.author, typeof blogs[0]?.author);
+
+      return blogs;
+
+    },
     //READ (one)
     blog: async (_: unknown, { id }: IdArgs) => {
-      return await Blog.findById(new Types.ObjectId(id));
+      console.log("🔥 BLOG RESOLVER HIT456456456");
+
+      return Blog.findById(new Types.ObjectId(id))
+        .populate("author")
+        .populate("recomments.author");
     },
   },
 
@@ -37,13 +47,15 @@ export const blogResolvers = {
       if (!context.user) {
         throw new Error("User not authenticated");
       }
-      return await Blog.create({
+      const blog = await Blog.create({
         title,
         content,
         author: context.user._id,
+        recomments: [],
       });
+      return blog.populate("author");
     },
-    addRecommend: async (
+    addRecomment: async (
       _: unknown,
       { id, content }: AddRecomdArgs,
       context: GraphQLContext
@@ -56,12 +68,14 @@ export const blogResolvers = {
         throw new Error("Blog not found");
       }
 
-      blog.recommends.push({
+      blog.recomments.push({
         content,
         author: context.user._id,
       });
       await blog.save();
-      return blog.recommends[blog.recommends.length - 1];
+      return Blog.findById(blog._id)
+        .populate("author")
+        .populate("recomments.author");
     },
   },
 };

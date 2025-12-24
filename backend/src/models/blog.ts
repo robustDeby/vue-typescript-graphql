@@ -1,22 +1,21 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import type { UserDocument } from "./user.js";
 
+export interface Recomment {
+  content: string;
+ author: Types.ObjectId | UserDocument;
+}
 export interface BlogDocument extends Document {
-  author: {};
   title: string;
   content: string;
-  recommends: [
-    {
-      content: string;
-      author:{}
-    }
-  ];
+  author: Types.ObjectId | UserDocument;
+  recomments: Recomment[];
 }
 
 const blogSchema = new Schema<BlogDocument>({
   author: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
   title: {
     type: String,
@@ -26,18 +25,19 @@ const blogSchema = new Schema<BlogDocument>({
     type: String,
     required: true,
   },
-  recommends: [
+ recomments: [
     {
-      content: String,
+      content: { type: String, required: true },
       author: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
+        required: true,
       },
     },
   ],
 });
 
 const Blog: Model<BlogDocument> =
-  mongoose.models.Task || mongoose.model<BlogDocument>("Blog", blogSchema);
+  mongoose.models.Blog || mongoose.model<BlogDocument>("Blog", blogSchema);
 
 export default Blog;

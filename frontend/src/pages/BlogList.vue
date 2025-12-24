@@ -53,7 +53,7 @@ onMounted(fetchBlogs);
         </div>
         <p class="preview">{{ blog.content.slice(0, 100) }}...</p>
 
-        <span class="badge"> 💬 {{ blog.recommends.length }} </span>
+        <span class="badge"> 💬 {{ blog.recomments.length }} </span>
       </article>
     </div>
 

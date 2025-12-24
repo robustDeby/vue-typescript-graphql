@@ -6,7 +6,7 @@ export const ADD_BLOG = `
       content
     }
   }
-`
+`;
 
 export const GET_BLOGS = `
   query {
@@ -14,9 +14,13 @@ export const GET_BLOGS = `
       id
       title
       content
-      recommends {
+      recomments {
         id
         content
+        author {
+        name
+        email
+        }
       }
       author {
         name,
@@ -24,26 +28,29 @@ export const GET_BLOGS = `
       }
     }
   }
-`
+`;
 export const GET_BLOG = `
   query GetBlog($id: ID!) {
     blog(id: $id) {
       id
       title
       content
-      recommends {
+      recomments {
         id
         content
+        author {
+          name, email
+        }
       }
     }
   }
-`
+`;
 
-export const ADD_RECOMMEND = `
-  mutation AddRecommend($id: ID!, $content: String!) {
-    addRecommend(id: $id, content: $content) {
+export const ADD_recomment = `
+  mutation Addrecomment($id: ID!, $content: String!) {
+    addRecomment(id: $id, content: $content) {
       id
       content
     }
   }
-`
+`;

@@ -1,4 +1,4 @@
-import mongoose, { Document }  from 'mongoose'
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface UserDocument extends Document {
   name: string
@@ -8,7 +8,7 @@ export interface UserDocument extends Document {
   password: string
 }
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema<UserDocument>(
   {
     name: {
         type:String,
@@ -38,10 +38,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-export default mongoose.model('User', userSchema)
+const User: Model<UserDocument> =
+  mongoose.models.User || mongoose.model<UserDocument>("User", userSchema);
 
-userSchema.virtual('blogs', {
-  ref: 'Blog',
-  localField: '_id',
-  foreignField: 'author',
-})
+export default User;

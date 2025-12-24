@@ -1,50 +1,54 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { graphqlClient } from '@/graphql/client'
-import { GET_BLOG, ADD_RECOMMEND } from '@/graphql/operations'
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { graphqlClient } from "@/graphql/client";
+import { GET_BLOG, ADD_recomment } from "@/graphql/operations";
 
-interface Recommend {
-  id: string
-  content: string
+interface recomment {
+  id: string;
+  content: string;
+  author: {
+    name: string;
+    email: string;
+  };
 }
 
 interface Blog {
-  id: string
-  title: string
-  content: string
-  recommends: Recommend[]
+  id: string;
+  title: string;
+  content: string;
+  recomments: recomment[];
 }
 
-const route = useRoute()
-const blogId = route.params.id as string
+const route = useRoute();
+const blogId = route.params.id as string;
 
-const blog = ref<Blog | null>(null)
-const newRecommend = ref('')
-const loading = ref(false)
+const blog = ref<Blog | null>(null);
+const newrecomment = ref("");
+const loading = ref(false);
 
 const fetchBlog = async () => {
-  loading.value = true
+  loading.value = true;
   const result = await graphqlClient.request(GET_BLOG, {
     id: blogId,
-  })
-  blog.value = result.blog
-  loading.value = false
-}
+  });
+  blog.value = result.blog;
+  loading.value = false;
+};
 
-const addRecommend = async () => {
-  if (!newRecommend.value) return
+const addrecomment = async () => {
+  if (!newrecomment.value) return;
 
-  await graphqlClient.request(ADD_RECOMMEND, {
+  await graphqlClient.request(ADD_recomment, {
     id: blogId,
-    content: newRecommend.value,
-  })
+    content: newrecomment.value,
+  });
 
-  newRecommend.value = ''
-  fetchBlog() // refresh data
-}
+  newrecomment.value = "";
+  fetchBlog(); // refresh data
+};
 
-onMounted(fetchBlog)
+onMounted(fetchBlog);
 </script>
 <template>
   <div class="page">
@@ -60,25 +64,25 @@ onMounted(fetchBlog)
       <!-- Divider -->
       <hr />
 
-      <!-- Recommends -->
-      <section class="recommends">
-        <h3>💬 Recommends ({{ blog.recommends.length }})</h3>
+      <!-- recomments -->
+      <section class="recomments">
+        <h3>💬 Recomments ({{ blog.recomments.length }})</h3>
 
-        <ul v-if="blog.recommends.length">
-          <li v-for="r in blog.recommends" :key="r.id">
+        <ul v-if="blog.recomments.length">
+          <li v-for="r in blog.recomments" :key="r.id">
+            <div class="recomment-author">
+              {{ r.author.name }}
+            </div>
             {{ r.content }}
           </li>
         </ul>
 
-        <p v-else class="empty">No recommends yet. Be the first!</p>
+        <p v-else class="empty">No recomments yet. Be the first!</p>
 
-        <!-- Add recommend -->
-        <div class="add-recommend">
-          <input
-            v-model="newRecommend"
-            placeholder="Write a recommend..."
-          />
-          <button @click="addRecommend">Post</button>
+        <!-- Add recomment -->
+        <div class="add-recomment">
+          <input v-model="newrecomment" placeholder="Write a recomment..." />
+          <button @click="addrecomment">Post</button>
         </div>
       </section>
     </article>
@@ -130,19 +134,19 @@ hr {
   border-top: 1px solid #e5e7eb;
 }
 
-/* Recommends */
-.recommends h3 {
+/* recomments */
+.recomments h3 {
   margin-bottom: 1rem;
   color: #2563eb;
 }
 
-.recommends ul {
+.recomments ul {
   list-style: none;
   padding: 0;
   margin-bottom: 1.5rem;
 }
 
-.recommends li {
+.recomments li {
   background: #f1f5f9;
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -156,25 +160,25 @@ hr {
   margin-bottom: 1.5rem;
 }
 
-/* Add recommend */
-.add-recommend {
+/* Add recomment */
+.add-recomment {
   display: flex;
   gap: 0.5rem;
 }
 
-.add-recommend input {
+.add-recomment input {
   flex: 1;
   padding: 0.6rem 0.75rem;
   border-radius: 8px;
   border: 1px solid #cbd5f5;
 }
 
-.add-recommend input:focus {
+.add-recomment input:focus {
   outline: none;
   border-color: #2563eb;
 }
 
-.add-recommend button {
+.add-recomment button {
   padding: 0.6rem 1.2rem;
   border-radius: 8px;
   border: none;
@@ -183,8 +187,13 @@ hr {
   color: white;
   font-weight: 500;
 }
-
-.add-recommend button:hover {
+.recomment-author {
+  font-size: large;
+  font-family: cursive;
+  padding: 7px;
+  color: #6d4859;
+}
+.add-recomment button:hover {
   opacity: 0.9;
 }
 </style>

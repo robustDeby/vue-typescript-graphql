@@ -3,6 +3,7 @@ import { createClient, provideClient } from '@urql/vue'
 import { cacheExchange, fetchExchange } from '@urql/core'
 import { router } from './router'
 import App from './App.vue'
+import { createPinia } from 'pinia'
 import { hasValidLocalToken } from '@/auth/session'
 import { removeToken } from './auth/index'
 
@@ -13,7 +14,7 @@ const client = createClient({
     fetchExchange,
   ],
 })
-
+const pinia = createPinia()
 const app = createApp({
   setup() {
     provideClient(client)
@@ -25,6 +26,7 @@ if (!hasValidLocalToken()) {
   removeToken()
 }
 app
+.use(pinia)
 .use(router)
 .mount('#app')
 

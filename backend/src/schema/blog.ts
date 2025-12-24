@@ -1,7 +1,7 @@
 import { gql } from 'graphql-tag';
 
 export const blogTypeDefs = gql`
-  type Recommend {
+  type Recomment {
     id:ID!
     content:String!
     author:User!
@@ -12,7 +12,7 @@ export const blogTypeDefs = gql`
     author: User!
     title: String!
     content: String!
-    recommends:[Recommend!]!
+    recomments:[Recomment!]!
   }
 
   type Query {
@@ -22,6 +22,6 @@ export const blogTypeDefs = gql`
 
   extend type Mutation {
     addBlog(title: String!, content: String!):Blog!
-    addRecommend(id: ID!, content:String!): Blog!
+    addRecomment(id: ID!, content:String!): Blog!
   }
 `;

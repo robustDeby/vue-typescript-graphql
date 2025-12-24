@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const router = useRouter()
+const auth = useAuthStore()
+
+const logout = () => {
+  auth.logout()
+  router.push('/login')
+}
+
 </script>
 
 <template>
@@ -7,9 +17,13 @@ import { RouterLink } from 'vue-router'
     <div class="container">
       <h1 class="logo">MyBlog</h1>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/blogs">Blogs</RouterLink>
+       <nav>
+        <RouterLink to="/" v-if="auth.isLoggedIn">Home</RouterLink>
+        <RouterLink to="/blogs" v-if="auth.isLoggedIn">Blogs</RouterLink>
+        <a href="#" v-if="auth.isLoggedIn" @click.prevent="logout">Logout</a>
+
+        <RouterLink to="/register" v-if="!auth.isLoggedIn">Register</RouterLink>
+        <RouterLink to="/login" v-if="!auth.isLoggedIn">Login</RouterLink>
       </nav>
     </div>
   </header>
@@ -18,8 +32,8 @@ import { RouterLink } from 'vue-router'
 <style scoped>
 .header {
   border-bottom: 1px solid #eee;
-        background-color: #097095;
-    color: white;
+  background-color: #097095;
+  color: white;
 }
 
 .container {
